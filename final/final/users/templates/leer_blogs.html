@@ -1,0 +1,7 @@
+{% extends 'index.html' %}
+{% block repite %}
+    {% for b in blogs %}
+        <li>{{ b }}</li>
+    {% endfor %}
+    <a href="{% url 'posteo' %}">Agregar post</a>
+{% endblock %}

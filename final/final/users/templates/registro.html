@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% block repite %}
+<form action={%url 'registro'%} method='post'>{% csrf_token %}
+    {{form.as_p}}
+    <input type='submit' value='Registrar'>
+</form>
+{% endblock  %}
