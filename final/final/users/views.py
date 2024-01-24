@@ -82,7 +82,8 @@ def leer_blogs(request):
 def acerca_de_mi(request):
     return render(request, 'about.html')
 
-def edit_blog(request):
+def edit_blog(request, posteo):
+    blog_edit = Blog.objects.get(titulo=posteo)
     if request.method == 'POST':
         fomulario = BlogsForm(request.POST)
         if fomulario.is_valid():
@@ -95,9 +96,8 @@ def edit_blog(request):
             return render(request, 'leer_blogs.html')
         else:
             return render(request, 'ini.html', {'mensaje': "no fue editado"})
-        
-    else:
-        return render(request, )
+    form = BlogsForm(initial={'titulo':blog_edit.titulo, 'subtitulo':blog_edit.subtitulo, 'contenido':blog_edit.contenido})
+    return render(request, 'editarpost.html', {'form': form})
     
 
 def detalle(request):

@@ -2,6 +2,13 @@
 {% block repite %}
     {% for b in blogs %}
         <li>{{ b }}</li>
+        <button>
+            <a href="{% url 'eliminarpost' b.titulo %}">Eliminar</a>
+        </button>
+        <button>
+            <a href="{% url 'editpost' b.titulo %}">Editar</a>
+        </button>
     {% endfor %}
+    <br>
     <a href="{% url 'posteo' %}">Agregar post</a>
 {% endblock %}
