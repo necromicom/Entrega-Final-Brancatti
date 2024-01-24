@@ -8,8 +8,8 @@ class Blog(models.Model):
     contenido = models.TextField()
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
     creado = models.DateTimeField(auto_now_add=True)
-    from django.db import models
-from django.contrib.auth.models import User
+    
+
 
 class Blog(models.Model):
     titulo = models.CharField(max_length=50)

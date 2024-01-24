@@ -6,7 +6,10 @@
             <a href="{% url 'eliminarpost' b.titulo %}">Eliminar</a>
         </button>
         <button>
-            <a href="{% url 'editpost' b.titulo %}">Editar</a>
+            <a href="{% url 'edit' b.titulo %}">Editar</a>
+        </button>
+        <button>
+            <a href="{% url 'detalle' b.titulo %}">Ver</a>
         </button>
     {% endfor %}
     <br>

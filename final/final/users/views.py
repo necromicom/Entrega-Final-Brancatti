@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from django.views.generic import DetailView
+
 from django.contrib.auth import login, authenticate
 
 from django.contrib.auth.decorators import login_required
@@ -67,7 +69,7 @@ def escribir_blog(request):
             creado = datetime.datetime.now()
             blog = Blog(titulo=titulo, subtitulo=subtitulo, contenido=contenido, autor=autor, creado=creado)
             blog.save()
-            return render(request, 'ini.html')
+            return render(request, 'leer_blogs.html')
         else:
             return render(request, 'ini.html')
     else:
@@ -82,6 +84,8 @@ def leer_blogs(request):
 def acerca_de_mi(request):
     return render(request, 'about.html')
 
+
+@login_required
 def edit_blog(request, posteo):
     blog_edit = Blog.objects.get(titulo=posteo)
     if request.method == 'POST':
@@ -100,9 +104,7 @@ def edit_blog(request, posteo):
     return render(request, 'editarpost.html', {'form': form})
     
 
-def detalle(request):
-    pass
-
+@login_required
 def eliminar_post(request, posteo):
 
     blogpost = Blog.objects.get(titulo=posteo)
@@ -110,3 +112,10 @@ def eliminar_post(request, posteo):
     blogs = Blog.objects.all()
     contexto = {'blogs': blogs}
     return render(request, 'leer_blogs.html', contexto)
+
+
+def detalle(request, posteo):
+    blogdetalle = Blog.objects.get(titulo=posteo)
+
+    contexto ={'blog':blogdetalle}
+    return render(request, 'detalleblog.html', contexto)
