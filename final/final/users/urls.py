@@ -9,6 +9,8 @@ escribir_blog,
 eliminar_post, 
 edit_blog,
 detalle,
+#editar_perfil,
+perfil,
 )
 from django.contrib.auth.views import LogoutView
 
@@ -23,4 +25,6 @@ urlpatterns = [
     path('eliminar/<posteo>', eliminar_post, name='eliminarpost'),
     path('editpost/<posteo>', edit_blog, name='editar'),
     path('detalleblog/<posteo>', detalle, name='detalle'),
+    #path('editarperfil', editar_perfil, name='editarperfil'),
+    path('perfil', perfil, name='perfil'),
 ]

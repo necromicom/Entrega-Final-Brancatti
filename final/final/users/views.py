@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate
 
 from django.contrib.auth.decorators import login_required
 
-from users.forms import BlogsForm, RegistrationForm
+from users.forms import BlogsForm, RegistrationForm, UserEditForm
 from users.models import Blog
 
 import datetime
@@ -47,6 +47,7 @@ def registro(request):
             username = form.cleaned_data.get('username')
             nuevo = User(username=username)
             nuevo.set_password(form.cleaned_data.get('password1'))
+            nuevo.email = form.cleaned_data.get('email')
             nuevo.save()
 
             return render(request, 'ini.html', {'mensaje': f'se dio de alta el usuario {username}'})
@@ -122,3 +123,32 @@ def detalle(request, posteo):
 
     contexto ={'blog':blogdetalle}
     return render(request, 'detalleblog.html', contexto)
+
+
+#@login_required
+#def editar_perfil(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserEditForm(request.POST)
+
+        if form.is_valid():
+
+            data = form.cleaned_data
+            user.password1 = data.get('password1')
+            user.password2 = data.get('password2')
+            user.save()
+            return render(request, 'index.html')
+        
+
+    else:
+        form = UserEditForm()
+        return render(request, 'editarperfil.html', {'form':form, 'user': user})
+
+def perfil(request):
+    user = request.user
+    mail = user.email
+    usuario = user.username
+    email = mail
+    
+    return render(request, 'perfil.html', {'email':mail, 'user':user}) 

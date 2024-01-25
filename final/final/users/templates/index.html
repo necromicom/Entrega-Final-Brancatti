@@ -20,6 +20,8 @@
                     {% csrf_token %}
                     <button type='submit'>logout</button>
                 </form>
+                <a class="btn btn-primary" href="{% url "perfil"%}">perfil</a>
+             
                 {% else %}
                 <a class="btn btn-primary" href="{% url "registro"%}">Sign Up</a>
                 <a class="btn btn-primary" href="{% url "login" %}">Log in</a>
