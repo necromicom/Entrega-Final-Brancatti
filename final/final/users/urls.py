@@ -21,6 +21,6 @@ urlpatterns = [
     path('posteo', escribir_blog, name='posteo'),
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('eliminar/<posteo>', eliminar_post, name='eliminarpost'),
-    path('editpost/<posteo>', edit_blog, name='edit'),
-    path('detalleblog/<posteo>', detalle, name='detalle')
+    path('editpost/<posteo>', edit_blog, name='editar'),
+    path('detalleblog/<posteo>', detalle, name='detalle'),
 ]

@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
-from django.views.generic import DetailView
 
 from django.contrib.auth import login, authenticate
 
@@ -34,7 +33,7 @@ def logIn(request):
 
         else:
 
-            return render(request, 'ini.html', {'mensaje': 'no existe'})
+            return render(request, 'ini.html', {'mensaje': 'usuario no encontrado'})
 
 
     form = AuthenticationForm()
@@ -88,21 +87,25 @@ def acerca_de_mi(request):
 @login_required
 def edit_blog(request, posteo):
     blog_edit = Blog.objects.get(titulo=posteo)
-    if request.method == 'POST':
-        fomulario = BlogsForm(request.POST)
-        if fomulario.is_valid():
-            blogeditado = fomulario.cleaned_data
-            titulo = blogeditado.get('titulo')
-            subtitulo = blogeditado.get('subtitulo')
-            contenido = blogeditado.get('contenido')
-            blog2 = Blog(titulo=titulo, subtitulo=subtitulo, contenido=contenido)
-            blog2.save()
-            return render(request, 'leer_blogs.html')
-        else:
-            return render(request, 'ini.html', {'mensaje': "no fue editado"})
-    form = BlogsForm(initial={'titulo':blog_edit.titulo, 'subtitulo':blog_edit.subtitulo, 'contenido':blog_edit.contenido})
-    return render(request, 'editarpost.html', {'form': form})
-    
+    if request.user == blog_edit.autor:
+        if request.method == 'POST':
+            formulario = BlogsForm(request.POST)
+            if formulario.is_valid():
+                blog_edit.titulo = formulario.cleaned_data.get('titulo')
+                blog_edit.subtitulo = formulario.cleaned_data.get('subtitulo')
+                blog_edit.contenido = formulario.cleaned_data.get('contenido')
+                autor = request.user
+                blog_edit.autor = autor
+                blog_edit.save()
+                return render(request, 'leer_blogs.html')
+            else:
+                return render(request, 'ini.html', {'mensaje': "No fue editado. Formulario no válido."})
+        form = BlogsForm(initial={'titulo': blog_edit.titulo, 'subtitulo': blog_edit.subtitulo, 'contenido': blog_edit.contenido})
+        return render(request, 'editarpost.html', {'form': form, 'posteo': posteo})
+    else:
+        return render(request, 'ini.html', {'mensaje': 'No es tu post'})
+
+
 
 @login_required
 def eliminar_post(request, posteo):
